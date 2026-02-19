@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hyma's Burger House</title>
+    <style>
+        /* General Styles */
+        body { font-family: 'Arial', sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; scroll-behavior: smooth; }
+        header { background-color: #ff5722; color: white; padding: 15px 50px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        nav a { color: white; text-decoration: none; margin-left: 20px; font-weight: bold; }
+        
+        /* Hero Section */
+        .hero { 
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1571091718767-18b5b1457add?q=80&w=1200');
+            background-size: cover; background-position: center; height: 450px; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            color: white; text-align: center;
+        }
+
+        /* Menu Section */
+        .menu-section { padding: 50px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 260px; text-align: center; transition: 0.3s; }
+        .card:hover { transform: translateY(-10px); }
+        .card img { width: 100%; height: 160px; border-radius: 10px; object-fit: cover; }
+        .card h3 { margin: 15px 0 5px; color: #333; }
+        .card p { color: #ff5722; font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; }
+        .card button { background: #ff5722; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; }
+
+        /* Contact Section */
+        .contact-section { background-color: #222; color: white; padding: 60px 20px; text-align: center; }
+        .contact-section h2 { color: #ff5722; }
+        .contact-section a { color: #fff; text-decoration: none; font-weight: bold; border-bottom: 1px solid #ff5722; }
+
+        /* Cart Modal (Popup) */
+        #modal-bg { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; backdrop-filter: blur(5px); }
+        #cart-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 15px; z-index: 1001; width: 300px; text-align: center; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        .close-btn { background: #333; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 20px; font-weight: bold; }
+
+        footer { background-color: #111; color: #777; text-align: center; padding: 20px; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Hyma's Burger House 🍔</h1>
+    <nav>
+        <a href="#">Home</a>
+        <a href="#menu">Menu</a>
+        <a href="#contact">Contact</a>
+        <a href="javascript:void(0)" onclick="openCart()" id="cart-display" style="background: white; color: #ff5722; padding: 8px 15px; border-radius: 5px;">
+           🛒 Cart: (<span id="cart-count">0</span>)
+        </a>
+    </nav>
+</header>
+
+<section class="hero">
+    <h2 style="font-size: 3.5rem; margin: 0;">Welcome to Hyma's Burger House</h2>
+    <p style="font-size: 1.3rem;">Juicy Burgers Made with Love by Hyma!</p>
+</section>
+
+<h2 id="menu" style="text-align:center; margin-top:50px; font-size: 2.5rem; color: #333;">🍔 Our Delicious Menu</h2>
+<section class="menu-section">
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=500" alt="Cheese Burger">
+        <h3>Cheese Burger</h3>
+        <p>₹150</p>
+        <button onclick="addToCart(150)">Add to Cart</button>
+    </div>
+
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?q=80&w=500" alt="Chicken Burger">
+        <h3>Chicken Burger</h3>
+        <p>₹180</p>
+        <button onclick="addToCart(180)">Add to Cart</button>
+    </div>
+
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=500" alt="Veggie Burger">
+        <h3>Veggie Burger</h3>
+        <p>₹130</p>
+        <button onclick="addToCart(130)">Add to Cart</button>
+    </div>
+</section>
+
+<section id="contact" class="contact-section">
+    <h2>📞 Contact Us</h2>
+    <p>Orders kosam ventane call cheyandi:</p>
+    <p>Phone: <a href="tel:+919346953189">+91 93469 53189</a></p>
+    <p>Email: <a href="mailto:hyma@example.com">hyma@example.com</a></p>
+    <p>Location: Visakhapatnam, Andhra Pradesh</p>
+</section>
+
+<footer>
+    <p>&copy; 2026 Hyma's Burger House. All Rights Reserved.</p>
+    <p>Designed with ❤️ by <strong>Hyma</strong></p>
+</footer>
+
+<div id="modal-bg" onclick="closeCart()"></div>
+<div id="cart-modal">
+    <h3>🛒 Your Order</h3>
+    <hr>
+    <p>Items in Cart: <strong id="modal-count">0</strong></p>
+    <p style="font-size: 1.2rem;">Total Bill: <strong style="color: green;">₹<span id="total-price">0</span></strong></p>
+    <button class="close-btn" onclick="closeCart()">Close Window</button>
+</div>
+
+<script>
+    let count = 0;
+    let totalAmount = 0;
+
+    function addToCart(price) {
+        count++;
+        totalAmount += price;
+
+        // Header & Popup Updates
+        document.getElementById('cart-count').innerText = count;
+        document.getElementById('modal-count').innerText = count;
+        document.getElementById('total-price').innerText = totalAmount;
+
+        alert("Item added! Mee current bill: ₹" + totalAmount);
+    }
+
+    function openCart() {
+        document.getElementById('cart-modal').style.display = 'block';
+        document.getElementById('modal-bg').style.display = 'block';
+    }
+
+    function closeCart() {
+        document.getElementById('cart-modal').style.display = 'none';
+        document.getElementById('modal-bg').style.display = 'none';
+    }
+</script>
+
+</body>
+</html>
